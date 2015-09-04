@@ -1,4 +1,5 @@
 from PIL import Image
+import argparse
 
 
 def boundry_list():
@@ -125,9 +126,17 @@ Determine shred number, call the functions.
 """
 
 if __name__ == "__main__":
-    image = Image.open("image.png")
-    data = list(image.getdata())
-    width, height = image.size
-    shred_number = width / 32
-    image_shred_list = neighbour_shreds(boundry_list())
-    create_image(shred_number, sorted_shreds(image_shred_list))
+
+    try:
+        parser = argparse.ArgumentParser()
+        parser.add_argument("image_to_read")
+        args = parser.parse_args()
+        if args.image_to_read:
+            image = Image.open(args.image_to_read)
+            data = list(image.getdata())
+            width, height = image.size
+            shred_number = width / 32
+            image_shred_list = neighbour_shreds(boundry_list())
+            create_image(shred_number, sorted_shreds(image_shred_list))
+    except ValueError:
+        print("Error in reading file!")
